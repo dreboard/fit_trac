@@ -19,7 +19,7 @@ class DataController extends Controller
     public function getCalEvents()
     {
         $user = User::find(Auth::user()->id);
-        return response()->json(['events' => $user->events], 200);
+        return response()->json(['events' => ''], 200);
     }
 
     public function getWeightPage()

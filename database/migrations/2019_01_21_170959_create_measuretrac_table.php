@@ -14,13 +14,11 @@ class CreateMeasuretracTable extends Migration {
 	{
 		Schema::create('measuretrac', function(Blueprint $table)
 		{
-			$table->integer('measuretracID', true);
+			$table->integer('id', true);
 			$table->decimal('measurement', 7, 3);
-			$table->integer('userID');
+			$table->integer('user_id');
 			$table->date('enterDate');
 			$table->string('part', 100);
-			$table->integer('initial')->default(0);
-			$table->integer('employeeID')->default(0);
 		});
 	}
 

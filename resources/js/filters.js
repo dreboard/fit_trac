@@ -25,3 +25,9 @@ Vue.filter('last', function (values) {
     }
     return values;
 });
+Vue.filter('nullMeasurement',function(value) {
+    if(value === null) {
+        value = '0.00';
+    }
+    return value;
+})

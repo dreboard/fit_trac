@@ -13,12 +13,32 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
+Route::post('weight', 'Api\WeightDataController@getWeight')->name('getWeight');
+
+
+Route::post('getWeightHistory', 'Api\WeightDataController@getWeightHistory')->name('getWeightHistory');
+Route::post('newWeightEntry', 'Api\WeightDataController@newWeightEntry')->name('newWeightEntry');
+Route::post('newWeightGoalEntry', 'Api\WeightDataController@newWeightGoalEntry')->name('newWeightGoalEntry');
+
+Route::get('apiTest', 'Api\MeasureDataController@test');
+
+
+Route::post('updatePart', 'Api\MeasureDataController@updatePart')->name('updatePart');
+Route::post('getParts', 'Api\MeasureDataController@getParts')->name('getParts');
+
+
+
+
+Route::fallback(function(){
+    return response()->json(['message' => 'Not Found.'], 404);
+})->name('api.fallback.404');
+
+
+/*Route::group(['prefix'=>'api'], function(){
+    Route::post('/booking/request', 'BookingController@sendMail');
 });
 
-Route::post('/weight', 'Api\WeightDataController@getWeight')->name('getWeight');
+Route::prefix('api')->group(function () {
 
-Route::post('/getWeightHistory', 'Api\WeightDataController@getWeightHistory')->name('getWeightHistory');
-Route::post('/newWeightEntry', 'Api\WeightDataController@newWeightEntry')->name('newWeightEntry');
-Route::post('/newWeightGoalEntry', 'Api\WeightDataController@newWeightGoalEntry')->name('newWeightGoalEntry');
+});
+*/

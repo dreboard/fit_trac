@@ -22,6 +22,8 @@ window.Vue = require('vue');
 Vue.component('example-component', require('./components/ExampleComponent.vue'));
 Vue.component('front-fitness-calendar', require('./components/FitFrontCalendar'));
 Vue.component('weight-stats', require('./components/WeightStats'));
+Vue.component('measurements', require('./components/MeasurementComponent.vue'));
+
 // const files = require.context('./', true, /\.vue$/i)
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key)))
 

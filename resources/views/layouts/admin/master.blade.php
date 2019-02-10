@@ -7,9 +7,12 @@
     <meta name="description" content="">
     <meta name="author" content="dev-php">
     <meta name="csrf-token" content="{{ csrf_token() }}">
+    <meta name="api-base-url" content="{{ getenv('APP_URL') }}" />
 
     <script async>
         var ENVIRONMENT = "{{ App::environment() }}";
+        var BASE_URL = "{{ getenv('APP_URL') }}";
+        var USER_ID = "{{Auth::user()->id}}";
     </script>
     <title>{{ config('app.name', 'Laravel') }}</title>
 

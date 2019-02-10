@@ -18,9 +18,10 @@
         </a>
         <div class="dropdown-menu" aria-labelledby="pagesDropdown">
             <h6 class="dropdown-header">Stats:</h6>
-            <a class="dropdown-item" href="{{ route('getWeightPage') }}">Weight</a>
-            <a class="dropdown-item" href="{{ route('profile') }}">Nutrition</a>
-            <a class="dropdown-item" href="{{ route('profile') }}">Photos</a>
+            <a class="dropdown-item" href="{{ url('weight-page') }}">Weight</a>
+            <a class="dropdown-item" href="{{ url('measurements') }}">Measure</a>
+            <a class="dropdown-item" href="{{ url('profile') }}">Nutrition</a>
+            <a class="dropdown-item" href="{{ url('profile') }}">Photos</a>
             <div class="dropdown-divider"></div>
             <h6 class="dropdown-header">Calculators:</h6>
             <a class="dropdown-item" href="{{ route('profile') }}">Bodyfat</a>

@@ -47,8 +47,11 @@
                 <div class="col-lg-12">
                     <h3>Goal Progress</h3>
                     <p><strong>Current Goal:</strong> {{ weightGoal }}</p>
-                    <div class="progress mb-5">
+                    <div class="progress mb-5" v-if="showProgress == true">
                         <div class="progress-bar" role="progressbar" :style="{width: goalProgress}">{{ weightDiff }} lbs to go</div>
+                    </div>
+                    <div class="progress mb-5" v-else>
+                        <div class="progress-bar" role="progressbar" style="width: 100%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">Goal Met</div>
                     </div>
                     <form>
                         <div class="form-group row" id="newWeightGoalForm">
@@ -94,6 +97,7 @@
                 weightGoalForm: {
                     weightGoalInput: '',
                 },
+                showProgress: true,
                 errors: [],
                 success : false,
                 lastDate: '',
@@ -104,6 +108,7 @@
             }
         },
         methods: {
+
             calculatePlanDiff(goal, weight){
                 switch (this.weight_plan) {
                     case 'gain':
@@ -260,13 +265,15 @@
 
         },
         created(){
-            this.getWeights();
+            window.addEventListener("load", function(event) {
 
-            this.getUserWeightHistory();
+            });
+
             //console.log(this.userEvents);
         },
         mounted() {
-
+            this.getWeights();
+            this.getUserWeightHistory();
         },
         computed: {
             getProgress(){
@@ -275,7 +282,18 @@
             getPlanDiff(){
                 return this.calculatePlanDiff(this.weightGoal, this.lastWeight);
             },
-
+            isGoalMet(){
+                switch (this.weight_plan) {
+                    case 'gain':
+                        return this.showProgress = this.lastWeight >= this.weightGoal;
+                        break;
+                    case 'lose':
+                        return this.showProgress = this.weightGoal >= this.lastWeight;
+                        break;
+                    default:
+                        return this.showProgress;
+                }
+            }
         },
     }
 

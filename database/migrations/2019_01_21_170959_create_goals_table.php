@@ -14,11 +14,11 @@ class CreateGoalsTable extends Migration {
 	{
 		Schema::create('goals', function(Blueprint $table)
 		{
-			$table->integer('goalID', true);
+			$table->integer('id', true);
 			$table->string('goalName');
 			$table->integer('weight');
 			$table->date('goalDate');
-			$table->integer('userID');
+			$table->integer('user_id');
 		});
 	}
 

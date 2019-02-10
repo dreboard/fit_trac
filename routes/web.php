@@ -16,10 +16,23 @@ Route::get('/', 'FrontController@index');
 Auth::routes();
 
 
+Route::group(['middleware' => ['web']], function () {
+    //
+});
+
 Route::get('/home', 'HomeController@index')->name('home');
-Route::get('/profile', 'HomeController@profile')->name('profile');
+Route::get('profile', 'HomeController@profile')->name('profile');
 
 
-Route::get('/events', 'Api\DataController@getCalEvents')->name('calEvents');
-Route::get('/weight-page', 'Api\WeightDataController@getWeightPage')->name('getWeightPage');
+Route::get('events', 'Api\DataController@getCalEvents')->name('calEvents');
+Route::get('weight-page', 'Api\WeightDataController@getWeightPage')->name('getWeightPage');
+
+Route::get('/measurements', 'MeasureController@measurements')->name('measurements');
+
+Route::post('getWeightHistory', 'Api\WeightDataController@getWeightHistory');
+
+
+
+
+
 // end
