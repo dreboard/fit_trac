@@ -35,12 +35,28 @@ trait MeasureConversion
         $percentChange = round(($diff/$original)*100, 2);
         return "$percentChange% $more_less";
     }
+    
+    public function actualDiff($initial, $current):string
+    {
+        if($initial == 0 || $current == 0){
+            return '0%';
+        }
+        if($initial > $current){
+            $diff = $this->decToFraction($initial - $current);
 
+        } else {
+            $diff = $this->decToFraction($current - $initial);
+        }
+        return $diff;
+    }
     /**
      * @param $float
      * @return float|int|string
      */
-    public function decToFraction($float) {
+    public function decToFraction(string $float):string {
+        if($float === '0.00' || !$float || empty($float)){
+            return '0.00';
+        }
         // 1/2, 1/4, 1/8, 1/16, 1/3 ,2/3, 3/4, 3/8, 5/8, 7/8, 3/16, 5/16, 7/16,
         // 9/16, 11/16, 13/16, 15/16
         $whole = floor ( $float );
@@ -60,7 +76,41 @@ trait MeasureConversion
         }
         return ($whole == 0 ? '' : $whole) . " " . ($roundedDecimal * $denom) . "/" . $denom;
     }
+    public function decimalToFraction($decimal)
+    {
+        if ($decimal < 0 || !is_numeric($decimal)) {
+            // Negative digits need to be passed in as positive numbers
+            // and prefixed as negative once the response is imploded.
+            return false;
+        }
+        if ($decimal == 0) {
+            return [0, 0];
+        }
 
+        $tolerance = 1.e-4;
+
+        $numerator = 1;
+        $h2 = 0;
+        $denominator = 0;
+        $k2 = 1;
+        $b = 1 / $decimal;
+        do {
+            $b = 1 / $b;
+            $a = floor($b);
+            $aux = $numerator;
+            $numerator = $a * $numerator + $h2;
+            $h2 = $aux;
+            $aux = $denominator;
+            $denominator = $a * $denominator + $k2;
+            $k2 = $aux;
+            $b = $b - $a;
+        } while (abs($decimal - $numerator / $denominator) > $decimal * $tolerance);
+
+        return [
+            $numerator,
+            $denominator
+        ];
+    }
     /**
      * @param $inches
      * @return string

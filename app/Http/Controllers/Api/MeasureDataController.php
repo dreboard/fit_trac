@@ -61,11 +61,12 @@ class MeasureDataController extends Controller
     {
         $request->validate([
             'id' => 'required',
-            'measurement' => 'required|between:8,80.99',
+            'part' => 'required',
+            'measurement' => 'required',
         ]);
 
         try{
-            $this->weightService->saveNewWeight($request);
+            $this->measureService->saveNewMeasurement($request);
             return response()->json(['status'=>'true']);
         }catch (\Throwable $e){
             Log::error($e->getMessage());

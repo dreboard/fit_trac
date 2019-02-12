@@ -10,7 +10,8 @@
                             <option value="" selected="selected">-</option>
                             <option value="neck">Neck</option>
                             <option value="shoulder">Shoulder</option>
-                            <option value="bicep">Bicep</option>
+                            <option value="left_bicep">Left Bicep</option>
+                            <option value="right_bicep">Right Bicep</option>
                             <option value="chest">Chest</option>
                             <option value="waist">Waist</option>
                             <option value="hips">Hips</option>
@@ -71,32 +72,42 @@
                 </tr>
 
                 <tr>
-                    <th scope="col">{{ body_data.headers.neck}}</th><td>{{ body_data.current.neck}}</td><td>{{ body_data.initial.neck}}</td><td>{{ body_data.difference.neck}}</td>
+                    <th scope="col">{{ body_data.headers.neck}}</th><td v-if="body_data.current.converted.neck === '0.00' "> {{body_data.initial.converted.neck}} </td> <td v-else>{{ body_data.current.converted.neck}}</td>  <td>{{ body_data.initial.converted.neck}}</td><td>{{ body_data.difference.neck}}</td>
+                </tr>
+                <tr>
+                    <th scope="col">{{ body_data.headers.shoulder}}</th><td v-if="body_data.current.converted.shoulder === '0.00' "> {{body_data.initial.converted.shoulder}} </td> <td v-else>{{ body_data.current.converted.shoulder}}</td>  <td>{{ body_data.initial.converted.shoulder}}</td><td>{{ body_data.difference.shoulder}}</td>
+                </tr>
+              
+                <tr>
+                    <th scope="col">{{ body_data.headers.left_bicep}}</th><td v-if="body_data.current.actual.left_bicep === '0.00' "> {{body_data.initial.converted.left_bicep}} </td> <td v-else>{{ body_data.current.converted.left_bicep}}</td>  <td>{{ body_data.initial.converted.left_bicep}}</td><td>{{ body_data.difference.left_bicep}}</td>
+                </tr>
+                <tr>
+                    <th scope="col">{{ body_data.headers.right_bicep}}</th><td v-if="body_data.current.converted.right_bicep === '0.00' "> {{body_data.initial.converted.right_bicep}} </td> <td v-else>{{ body_data.current.converted.right_bicep}}</td>  <td>{{ body_data.initial.converted.right_bicep}}</td><td>{{ body_data.difference.right_bicep}}</td>
                 </tr>
 
                 <tr>
-                    <th scope="col">{{ body_data.headers.shoulder}}</th><td v-if="body_data.current.shoulder == '0.00' "> {{body_data.initial.shoulder}} </td> <td v-else>{{ body_data.current.shoulder}}</td>  <td>{{ body_data.initial.shoulder}}</td><td>{{ body_data.difference.shoulder}}</td>
+                    <th scope="col">{{ body_data.headers.chest}}</th><td v-if="body_data.current.converted.chest === '0.00' "> {{body_data.initial.converted.chest}} </td> <td v-else>{{ body_data.current.converted.chest}}</td>  <td>{{ body_data.initial.converted.chest}}</td><td>{{ body_data.difference.chest}}</td>
+                </tr>
+
+                <tr>
+                    <th scope="col">{{ body_data.headers.waist}}</th><td v-if="body_data.current.converted.waist === '0.00' "> {{body_data.initial.converted.waist}} </td> <td v-else>{{ body_data.current.converted.waist}}</td>  <td>{{ body_data.initial.converted.waist}}</td><td>{{ body_data.difference.waist}}</td>
+                </tr>
+
+                <tr>
+                    <th scope="col">{{ body_data.headers.hips}}</th><td v-if="body_data.current.converted.hips === '0.00' "> {{body_data.initial.converted.hips}} </td> <td v-else>{{ body_data.current.converted.hips}}</td>  <td>{{ body_data.initial.converted.hips}}</td><td>{{ body_data.difference.hips}}</td>
                 </tr>
                 <tr>
-                    <th scope="col">{{ body_data.headers.left_bicep}}</th><td>{{ body_data.current.left_bicep}}</td><td>{{ body_data.initial.left_bicep}}</td><td>{{ body_data.difference.left_bicep}}</td>
+                    <th scope="col">{{ body_data.headers.left_thigh}}</th><td v-if="body_data.current.actual.left_thigh === '0.00' "> {{body_data.initial.converted.left_thigh}} </td> <td v-else>{{ body_data.current.converted.left_thigh}}</td>  <td>{{ body_data.initial.converted.left_thigh}}</td><td>{{ body_data.difference.left_thigh}}</td>
+                </tr>
+
+                <tr>
+                    <th scope="col">{{ body_data.headers.right_thigh}}</th><td v-if="body_data.current.actual.right_thigh === '0.00' "> {{body_data.initial.converted.right_thigh}} </td> <td v-else>{{ body_data.current.converted.right_thigh}}</td>  <td>{{ body_data.initial.converted.right_thigh}}</td><td>{{ body_data.difference.right_thigh}}</td>
                 </tr>
                 <tr>
-                    <th scope="col">{{ body_data.headers.right_bicep}}</th><td>{{ body_data.current.right_bicep}}</td><td>{{ body_data.initial.right_bicep}}</td><td>+2in 11.76%</td>
+                    <th scope="col">{{ body_data.headers.left_calf}}</th><td v-if="body_data.current.actual.left_calf === '0.00' "> {{body_data.initial.converted.left_calf}} </td> <td v-else>{{ body_data.current.converted.left_calf}}</td>  <td>{{ body_data.initial.converted.left_calf}}</td><td>{{ body_data.difference.left_calf}}</td>
                 </tr>
                 <tr>
-                    <th scope="col">{{ body_data.headers.chest}}</th><td>{{ body_data.current.chest}}</td><td>{{ body_data.initial.chest}}</td><td>{{ body_data.difference.chest}}</td>
-                </tr>
-                <tr>
-                    <th scope="col">{{ body_data.headers.waist}}</th><td v-if="body_data.current.waist == '0.00' "> {{body_data.initial.waist}} </td> <td v-else>{{ body_data.current.waist}}</td>  <td>{{ body_data.initial.waist}}</td><td>{{ body_data.difference.waist}}</td>
-                </tr>
-                <tr>
-                    <th scope="col">Hips</th><td>44</td><td>44</td><td>44</td>
-                </tr>
-                <tr>
-                    <th scope="col">Thigh</th><td>44</td><td>44</td><td>44</td>
-                </tr>
-                <tr>
-                    <th scope="col">Calf</th><td>44</td><td>44</td><td>44</td>
+                    <th scope="col">{{ body_data.headers.right_calf}}</th><td v-if="body_data.current.actual.right_calf === '0.00' "> {{body_data.initial.converted.right_calf}} </td> <td v-else>{{ body_data.current.converted.right_calf}}</td>  <td>{{ body_data.initial.converted.right_calf}}</td><td>{{ body_data.difference.right_calf}}</td>
                 </tr>
             </table>
         </div>
@@ -105,7 +116,7 @@
 
 <script>
     export default {
-        props: ['user_id', 'get_parts_url'],
+        props: ['user_id', 'get_parts_url','update_part_url'],
         data() {
             return {
                 errors: [],
@@ -115,7 +126,8 @@
                 body_data: [],
                 measureForm: {
                     partInches: '',
-                    partSub: ''
+                    partSub: '',
+                    part: ''
                 },
 
             }
@@ -139,7 +151,7 @@
                 });
             },
             updateUserPart(){
-                window.axios.post(BASE_URL+'/api/updatePart', {
+                window.axios.post(this.update_part_url, {
                     part: this.measureForm.part,
                     measurement: this.measureForm.partInches+'.'+this.measureForm.partSub,
                     id: this.user_id,
@@ -152,8 +164,7 @@
                         this.errors = [];
                         this.success = true;
 
-                        this.getWeights();
-                        this.getUserWeightHistory();
+                        this.getData();
 
                     }).catch((error)=>{
                     if (ENVIRONMENT === "local") {

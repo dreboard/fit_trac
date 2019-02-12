@@ -19,6 +19,7 @@
             <measurements
                     user_id="{{$user->id}}"
                     get_parts_url="{{route('getParts')}}"
+                    update_part_url="{{url('/api/updatePart')}}"
             >
 
             </measurements>

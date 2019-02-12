@@ -11,12 +11,23 @@
 namespace App\Http\Controllers\Services;
 
 use App\{Http\Resources\InitialResource, Http\Traits\MeasureConversion, Measurement, InitialMeasure};
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
+/**
+ * Class MeasureService
+ * @package App\Http\Controllers\Services
+ */
 class MeasureService
 {
     use MeasureConversion;
+
+    /**
+     * @var array
+     */
+    protected $partsArray = [];
 
 
     /**
@@ -32,25 +43,20 @@ class MeasureService
         return [];
     }
 
+    /**
+     * @param $id
+     * @return array
+     */
     public function measureData($id)
     {
-        $partsArray = [];
-
-
-        $partsArray['headers'] = $this->measureHeaders();
-
-        //$partsCurrent = Measurement::find('user_id',$id);
-        $partsCurrent = DB::table('measurements')->where('user_id', '=', $id)->get();
-
-
-        //$initial = InitialMeasure::where('user_id', $id)->get(); //
-        //$partsArray['initial'] = $initial[0];
-
-
-        $partsArray['initial'] = $this->measureInitial($id);
-        $partsArray['current'] = $this->getCurrentMeasure($id);
-        $partsArray['difference'] = $this->measureDiff($partsArray['initial'], $partsArray['current']);
-        return $partsArray;
+        $this->partsArray['headers'] = $this->measureHeaders();
+        $this->partsArray['initial']['actual'] = $this->measureInitial($id)->toArray();
+        $this->partsArray['initial']['converted'] = $this->getInitialConvertedMeasure();
+        $this->partsArray['current'] = $this->getCurrentMeasure($id);
+        $this->partsArray['current']['converted'] = $this->getCurrentConvertedMeasure();
+        $this->partsArray['difference'] = $this->percentageChange($this->partsArray['initial'], $this->partsArray['current']['actual']);
+        $this->partsArray['actualDiff'] = $this->actualChange($this->partsArray['initial'], $this->partsArray['current']['actual']);
+        return $this->partsArray;
     }
 
     /**
@@ -60,34 +66,122 @@ class MeasureService
      */
     public function getCurrentMeasure(int $id)
     {
-        $bodyParts = Measurement::$body_parts;
-        foreach ($bodyParts as $v){
-            $array[$v] = Measurement::where([
-                    ['part', '=', $v],
-                    ['user_id', '=', $id],
-                ])->pluck('measurement')->first() ?? '0.00';
+        $array = [];
+        try{
+            $bodyParts = Measurement::$body_parts;
+            foreach ($bodyParts as $v){
+                $array['actual'][$v] = Measurement::where([
+                        ['part', '=', $v],
+                        ['user_id', '=', $id],
+                    ])->orderBy('enterDate', 'desc')->pluck('measurement')->first() ?? '0.00';
+            }
+        }catch (\Throwable $e){
+            Log::error($e->getMessage());
         }
         return $array;
     }
 
-    public function measureDiff($initial, $current)
+    /**
+     * @return array
+     */
+    public function getCurrentConvertedMeasure()
     {
-//        return [];
-//        $diff = $this->percentDiff($original, $current);
-        $diffArray = [];
-        $bodyParts = Measurement::$body_parts;
-        foreach ($bodyParts as $k => $v){
-            $diffArray[$v] = $this->percentDiff($initial[$v], $current[$v]) ?? '0.00';
+        $a = [];
+        try{
+            foreach($this->partsArray['current']['actual'] as $k => $v){
+                $a[$k] = $this->decToFraction($v);
+            }
+            return $a;
+
+        }catch (\Throwable $e){
+            Log::error($e->getMessage());
         }
-        return $diffArray;
     }
 
+    /**
+     * @return array
+     */
+    public function getInitialConvertedMeasure()
+    {
+        $a = [];
+        try{
+            foreach($this->partsArray['initial']['actual'] as $k => $v){
+                $a[$k] = $this->decToFraction($v);
+            }
+            return $a;
+
+        }catch (\Throwable $e){
+            Log::error($e->getMessage());
+        }
+    }
+
+    /**
+     *
+     */
+    public function getActualMeasure()
+    {
+        try{
+            foreach($this->partsArray['initial']['actual'] as $k => $v){
+                $this->partsArray['initial']['converted'][$k] = $this->decToFraction($v);
+            }
+        }catch (\Throwable $e){
+            Log::error($e->getMessage());
+        }
+    }
+
+    /**
+     * @param $initial
+     * @param $current
+     * @return array
+     */
+    public function percentageChange($initial, $current)
+    {
+        $diffArray = [];
+
+        try{
+            $bodyParts = Measurement::$body_parts;
+        foreach ($bodyParts as $k => $v){
+            $diffArray[$v] = $this->percentDiff($initial['actual'][$v], $current[$v]) ?? '0.00';
+        }
+        return $diffArray;
+        }catch (\Throwable $e){
+            Log::error($e->getMessage());
+        }
+
+    }
+
+    /**
+     * @param $initial
+     * @param $current
+     * @return array
+     */
+    public function actualChange($initial, $current)
+    {
+        try{
+            $diffArray = [];
+            $bodyParts = Measurement::$body_parts;
+            foreach ($bodyParts as $k => $v){
+                $diffArray[$v] = $this->actualDiff($initial[$v], $current[$v]) ?? '0.00';
+            }
+            return $diffArray;
+        }catch (\Throwable $e){
+            Log::error($e->getMessage());
+        }
+
+    }
+
+    /**
+     * @param $id
+     * @return array
+     */
     public function measureInitial($id)
     {
-        $initial = InitialMeasure::where('user_id', $id)->get();
-        if ( count($initial) > 0 ) {
-            return $initial[0];
-        }else {
+        if($initial = InitialMeasure::where('user_id', $id)->get()){
+            if ( count($initial) > 0 ) {
+                return $initial[0];
+            }
+        }
+        else {
             $initial = new InitialMeasure();
             $initial->user_id = $id;
             $initial->initialDate = date('Y-m-d');
@@ -106,10 +200,13 @@ class MeasureService
             $initial->left_calf = '0.000';
             $initial->right_calf = '0.000';
             $initial->save();
-            return $initial;
+            return $initial->toArray();
         }
     }
 
+    /**
+     * @return array
+     */
     public function measureHeaders()
     {
         $body_parts = [];
@@ -117,6 +214,19 @@ class MeasureService
             $body_parts[$v] = ucwords(str_replace('_', ' ', $v)) ?? '0';
         }
         return $body_parts;
+    }
+
+    /**
+     * @param Request $request
+     */
+    public function saveNewMeasurement(Request $request)
+    {
+        $measurement = new Measurement;
+        $measurement->measurement = $request->measurement;
+        $measurement->user_id = $request->id;
+        $measurement->enterDate = date('Y-m-d');
+        $measurement->part = $request->part;
+        $measurement->save();
     }
 
 }
