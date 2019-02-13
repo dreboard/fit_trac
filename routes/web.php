@@ -31,7 +31,7 @@ Route::get('/measurements', 'MeasureController@measurements')->name('measurement
 
 Route::post('getWeightHistory', 'Api\WeightDataController@getWeightHistory');
 
-
+Route::get('/exercises', 'ExerciseController@index')->name('exercises');
 
 
 

@@ -1,6 +1,6 @@
 <template>
     <div class="row">
-        <div class="col-sm-4">
+        <div class="col-md-4">
 
             <form class="mb-5" id="newWeightForm">
                 <div class="form-group row">
@@ -41,7 +41,7 @@
             </table>
 
         </div>
-        <div class="col-sm-8">
+        <div class="col-md-8">
             <div class="mb-5" id="chart_div"></div>
             <div class="row">
                 <div class="col-lg-12">

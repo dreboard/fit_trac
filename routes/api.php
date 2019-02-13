@@ -26,7 +26,8 @@ Route::get('apiTest', 'Api\MeasureDataController@test');
 Route::post('updatePart', 'Api\MeasureDataController@updatePart')->name('updatePart');
 Route::post('getParts', 'Api\MeasureDataController@getParts')->name('getParts');
 
-
+Route::get('loadExercises', 'Api\ExerciseDataController@loadExercises')->name('loadExercises');
+Route::post('getExercises', 'Api\ExerciseDataController@getExercises')->name('getExercises');
 
 
 Route::fallback(function(){
