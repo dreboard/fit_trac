@@ -8,6 +8,9 @@
                     <div class="col-sm-8">
                         <select name="part" id="part" v-model="measureForm.part">
                             <option value="" selected="selected">-</option>
+                            <!--<option v-for="(value, key) in body_data.headers" value="{{ key }}">{{ value }}</option>-->
+
+
                             <option value="neck">Neck</option>
                             <option value="shoulder">Shoulder</option>
                             <option value="left_bicep">Left Bicep</option>
@@ -15,8 +18,10 @@
                             <option value="chest">Chest</option>
                             <option value="waist">Waist</option>
                             <option value="hips">Hips</option>
-                            <option value="thigh">Thigh</option>
-                            <option value="calf">Calf</option>
+                            <option value="left_thigh">Left Thigh</option>
+                            <option value="right_thigh">Right Thigh</option>
+                            <option value="left_calf">Left Calf</option>
+                            <option value="right_calf">Right Calf</option>
                         </select>
                         <span></span>
                     </div>

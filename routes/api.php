@@ -29,6 +29,8 @@ Route::post('getParts', 'Api\MeasureDataController@getParts')->name('getParts');
 Route::get('loadExercises', 'Api\ExerciseDataController@loadExercises')->name('loadExercises');
 Route::post('getExercises', 'Api\ExerciseDataController@getExercises')->name('getExercises');
 
+Route::get('loadPrograms', 'Api\ProgramDataController@loadPrograms')->name('loadPrograms');
+Route::post('programExercises', 'Api\ProgramDataController@getExercises')->name('programExercises');
 
 Route::fallback(function(){
     return response()->json(['message' => 'Not Found.'], 404);

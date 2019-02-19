@@ -1,37 +1,43 @@
 <template>
     <div class="row">
-        <div class="col-md-4">
+        <div class="col-md-3">
 
             <div id="calendar3"></div>
 
         </div>
-        <div class="col-md-8">
+        <div class="col-md-9">
             <h1>Exercises Database</h1>
             <table class="table table-striped">
 
                 <tr>
-                    <th scope="col">Part:</th>
-                    <th><select name="muscle" id="part" @change="getExercises" class="form-control">
+                    <th scope="col"><select name="muscle" id="part" @change="getExercises" class="form-control">
                         <option value="">Select Body Part</option>
                         <option  v-for="muscle in muscles" :value="muscle.id">{{ muscle.name }}</option>
                     </select></th>
-                    <th>Program</th>
                     <th><select name="program" id="program" v-model="exerciseForm.work_muscle" class="form-control">
+                        <option value="">Select Program</option>
                         <option  v-for="muscle in muscles" v-bind:value="muscles.id">{{ muscle.name }}</option>
                     </select></th>
+                    <th></th>
+                    <th>
+                        <form class="form-inline">
+                            <input type="text" class="form-control mb-2 mr-sm-2" id="inlineFormInputName2" placeholder="New Program">
+                            <button type="button" class="btn btn-primary mb-2">Save</button>
+                        </form>
+                    </th>
                 </tr>
          
                 <tr>
-                    <th scope="col">Part</th><th>Current</th><th>Initial</th><th>Diff</th>
+                    <th scope="col">Exercise</th><th>Equipment</th><th>Type</th><th></th>
                 </tr>
 
                 <tr v-for="part in part_exercises">
-                    <td>{{ part.exercise }}</td>
+                    <td>{{part.id}} | {{ part.exercise }}</td>
                     <td>{{ part.equipment }}</td>
                     <td>{{ part.type }}</td>
                     <td>
                         <div class="form-check">
-                            <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
+                            <input class="form-check-input" type="checkbox" v-model="programExercises" :value="part.id" @change="handleTasks(part.id)">
                             <label class="form-check-label" for="defaultCheck1">
                                 Save
                             </label>
@@ -56,6 +62,7 @@
                 success : false,
                 update_url: BASE_URL+'/api/updatePart',
                 exercises: [],
+                programExercises: [],
                 muscles: [],
                 load_id: '',
                 part_exercises: [],
@@ -105,11 +112,21 @@
                     }
                 });
                 console.log(event.target.value)
-            }
+            },
+            handleTasks(task) {
+                // Do what you want with the selected objects:
+                console.log(this.programExercises)
+            },
         },
         mounted() {
             console.log('Component mounted.');
             this.getData();
+        },
+        watch: {
+            selectedExercises: function (newVal, oldVal) {
+                // Do what you want with the selected objects:
+                console.log(newVal)
+            }
         }
     }
 </script>

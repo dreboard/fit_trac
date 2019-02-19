@@ -8,7 +8,7 @@
     <li class="nav-item">
         <a class="nav-link" href="{{route('home')}}">
             <i class="fas fa-fw fa-tachometer-alt"></i>
-            <span>Today</span>
+            <span>Profile</span>
         </a>
     </li>
     <li class="nav-item dropdown">
@@ -37,7 +37,7 @@
         </a>
         <div class="dropdown-menu" aria-labelledby="pagesDropdown">
             <a class="dropdown-item" href="{{ route('exercises') }}">Exercises</a>
-            <a class="dropdown-item" href="{{ route('exercises') }}">Programs</a>
+            <a class="dropdown-item" href="{{ route('programs') }}">Programs</a>
             <h6 class="dropdown-header">Type:</h6>
             <a class="dropdown-item" href="{{ route('profile') }}">Conditioning</a>
             <a class="dropdown-item" href="{{ route('profile') }}">Powerlifting</a>
